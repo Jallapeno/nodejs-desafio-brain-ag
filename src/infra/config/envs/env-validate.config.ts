@@ -3,6 +3,9 @@ import { ConfigService } from '@nestjs/config';
 export const envValidateConfig = (configService: ConfigService) => {
   const requiredEnvs = [
     'SERVER_PORT',
+    'NODE_ENV',
+    'LOKI_HOST',
+    'LOKI_SERVICE_NAME',
     // 'SERVER_DB_HOST',
     // 'SERVER_DB_PORT',
     // 'SERVER_DB_USER',

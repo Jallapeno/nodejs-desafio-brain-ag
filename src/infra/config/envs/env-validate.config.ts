@@ -6,11 +6,11 @@ export const envValidateConfig = (configService: ConfigService) => {
     'NODE_ENV',
     'LOKI_HOST',
     'LOKI_SERVICE_NAME',
-    // 'SERVER_DB_HOST',
-    // 'SERVER_DB_PORT',
-    // 'SERVER_DB_USER',
-    // 'SERVER_DB_PASSWORD',
-    // 'SERVER_DB_NAME',
+    'SERVER_DB_HOST',
+    'SERVER_DB_PORT',
+    'SERVER_DB_USER',
+    'SERVER_DB_PASSWORD',
+    'SERVER_DB_NAME',
   ];
   for (const env of requiredEnvs) {
     if (!configService.get(env)) {

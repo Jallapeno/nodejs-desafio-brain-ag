@@ -21,4 +21,15 @@ export class ProducerRepository implements IProducer {
   async update(data: any): Promise<void> {
     await this.producerRepository.nativeUpdate({ id: data.id }, data);
   }
+
+  async findById(id: number): Promise<Producer | null> {
+    return this.producerRepository.findOne({ id });
+  }
+
+  async delete(id: number): Promise<void> {
+    const producer = await this.producerRepository.findOne({ id });
+    if (producer) {
+      await this.producerRepository.getEntityManager().removeAndFlush(producer);
+    }
+  }
 }

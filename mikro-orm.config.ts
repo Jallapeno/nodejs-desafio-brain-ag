@@ -7,8 +7,11 @@ export default defineConfig({
   user: process.env.SERVER_DB_USER || 'myuser',
   password: process.env.SERVER_DB_PASSWORD || 'mypassword',
   dbName: process.env.SERVER_DB_NAME || 'brainagdb',
-  entities: [__dirname + '/../entities/mikro-orm/*.js'],
-  entitiesTs: [__dirname + '/../entities/mikro-orm/*.ts'],
+  // Para uso em produção (compilado com tsc)
+  entities: ['./dist/infra/entities/mikro-orm'],
+
+  // Para uso em desenvolvimento com ts-node
+  entitiesTs: ['./src/infra/entities/mikro-orm'],
   migrations: {
     path: './migrations',
     pathTs: './migrations',

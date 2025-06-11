@@ -4,7 +4,7 @@ import { RuralProperty } from './rural-property.entity';
 @Entity()
 export class Producer {
   @PrimaryKey()
-  id!: number;
+  id: number;
 
   @Property()
   name!: string;

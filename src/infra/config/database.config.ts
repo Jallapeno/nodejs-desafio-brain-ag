@@ -10,8 +10,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        entities: ['./dist/entities'],
-        entitiesTs: ['./src/entities'],
+        entities: [__dirname + '/../entities/mikro-orm/*.js'],
+        entitiesTs: [__dirname + '/../entities/mikro-orm/*.ts'],
         dbName: configService.get<string>('SERVER_DB_NAME'),
         user: configService.get<string>('SERVER_DB_USER'),
         password: configService.get<string>('SERVER_DB_PASSWORD'),

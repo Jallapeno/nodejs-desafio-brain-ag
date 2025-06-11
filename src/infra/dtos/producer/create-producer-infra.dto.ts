@@ -1,17 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, Validate } from 'class-validator';
+import { IsCpfOrCnpj } from 'src/validators/is-cpf-or-cnpj.validator';
 
 export class CreateProducerDto {
-  @ApiProperty({
-    description: 'Name of the producer',
-    example: 'John Doe',
-    required: true,
-  })
+  @ApiProperty({ description: 'Producer name', example: 'John Doe' })
+  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({
-    description: 'City where the producer is located',
-    example: '58453523045',
-    required: true,
-  })
+  @ApiProperty({ description: 'CPF or CNPJ', example: '58453523045' })
+  @IsNotEmpty()
+  @Validate(IsCpfOrCnpj)
   cpfCnpj: string;
 }

@@ -20,7 +20,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         driver: PostgreSqlDriver,
       }),
     }),
+    MikroOrmModule
   ],
   exports: [MikroOrmModule],
 })
-export class AppModule { }
+export class DatabaseConfigModule { }

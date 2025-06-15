@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from './modules/logger.module';
 import { DatabaseConfigModule } from './infra/config/database.config';
 import { HealthModule } from './modules/health.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './exception/filter/all.exceptions.filter';
+import { ProducerModule } from './modules/producer.module';
+
+const AllExceptionsFilterProvider = {
+  provide: APP_FILTER,
+  useClass: AllExceptionsFilter,
+};
 
 @Module({
   imports: [
@@ -13,9 +19,9 @@ import { HealthModule } from './modules/health.module';
     }),
     LoggerModule,
     DatabaseConfigModule,
-    HealthModule
+    HealthModule,
+    ProducerModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [AllExceptionsFilterProvider],
 })
 export class AppModule { }

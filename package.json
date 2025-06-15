@@ -83,20 +83,48 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist/",
+      "<rootDir>/build/",
+      "<rootDir>/node_modules/",
+      "<rootDir>/src/app.module.ts",
+      "<rootDir>/src/main.ts",
+      "<rootDir>/src/requirements.ts",
+      "<rootDir>/src/modules/",
+      "<rootDir>/src/infra/dtos/",
+      "<rootDir>/src/dtos/",
+      "<rootDir>/src/controller/health.controller.ts",
+      "<rootDir>/src/infra/"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/src/$1"
+    },
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.ts"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/",
+      "<rootDir>/src/app.module.ts",
+      "<rootDir>/src/main.ts",
+      "<rootDir>/src/requirements.ts",
+      "<rootDir>/src/modules/",
+      "<rootDir>/src/infra/dtos/",
+      "<rootDir>/src/dtos/",
+      "<rootDir>/src/controller/health.controller.ts",
+      "<rootDir>/src/infra/"
+    ]
   }
 }

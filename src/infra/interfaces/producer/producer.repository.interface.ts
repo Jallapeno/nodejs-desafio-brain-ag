@@ -6,4 +6,5 @@ export interface IProducer {
   update(data: UpdateProducerDto): Promise<void>;
   findById(id: number): Promise<any>;
   delete(id: number): Promise<void>;
+  findByCpfCnpj(cpfCnpj: string): Promise<any>;
 }

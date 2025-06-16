@@ -12,8 +12,6 @@ export class ProducerRepository implements IProducer {
   ) { }
 
   async create(data: any): Promise<void> {
-    // const producer = this.producerRepository.create(data);
-    // await this.producerRepository.insert(producer);
     const producer = this.producerRepository.getEntityManager().create(Producer, data);
     await this.producerRepository.getEntityManager().persistAndFlush(producer);
   }
@@ -31,5 +29,9 @@ export class ProducerRepository implements IProducer {
     if (producer) {
       await this.producerRepository.getEntityManager().removeAndFlush(producer);
     }
+  }
+
+  async findByCpfCnpj(cpfCnpj: string): Promise<Producer | null> {
+    return this.producerRepository.findOne({ cpfCnpj });
   }
 }

@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CREATE_RURAL_PROPERTY_USE_CASE } from "src/constants/constants";
+import { RuralPropertyController } from "src/controllers/rural-property.controller";
 
 describe('RuralPropertyController', () => {
   let controller: RuralPropertyController;

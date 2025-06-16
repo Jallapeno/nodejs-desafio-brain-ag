@@ -1,8 +1,9 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { CREATE_PRODUCER_USE_CASE, DELETE_PRODUCER_USE_CASE, UPDATE_PRODUCER_USE_CASE } from "src/constants/constants";
+import { CREATE_PRODUCER_USE_CASE, DELETE_PRODUCER_USE_CASE, LIST_PRODUCER_BY_CPF_CNPJ_USE_CASE, UPDATE_PRODUCER_USE_CASE } from "src/constants/constants";
 import { ProducerController } from "src/controllers/producer.controller";
 import { CreateProducerUseCase } from "src/usecases/producer/create-producer.usecase";
 import { DeleteProducerUseCase } from "src/usecases/producer/delete-producer.usecase";
+import { ListProducerByCpfCnpjUseCase } from "src/usecases/producer/list-producer-by-cpf-cnpj.usecase";
 import { UpdateProducerUseCase } from "src/usecases/producer/update-producer.usecase";
 
 describe('ProducerController', () => {
@@ -10,6 +11,7 @@ describe('ProducerController', () => {
   let createProducerUseCase: CreateProducerUseCase;
   let updateProducerUseCase: UpdateProducerUseCase;
   let deleteProducerUseCase: DeleteProducerUseCase;
+  let listProducerByCpfCnpjUseCase: ListProducerByCpfCnpjUseCase;
 
   const mockCreateProducerUseCase = {
     execute: jest.fn(),
@@ -20,6 +22,10 @@ describe('ProducerController', () => {
   }
 
   const mockDeleteProducerUseCase = {
+    execute: jest.fn(),
+  }
+
+  const mockListByCpfCnpjUseCase = {
     execute: jest.fn(),
   }
 
@@ -39,6 +45,10 @@ describe('ProducerController', () => {
           provide: DELETE_PRODUCER_USE_CASE,
           useValue: mockDeleteProducerUseCase,
         },
+        {
+          provide: LIST_PRODUCER_BY_CPF_CNPJ_USE_CASE,
+          useValue: mockListByCpfCnpjUseCase,
+        },
       ],
     }).compile();
 
@@ -46,6 +56,7 @@ describe('ProducerController', () => {
     createProducerUseCase = module.get<CreateProducerUseCase>(CREATE_PRODUCER_USE_CASE);
     updateProducerUseCase = module.get<UpdateProducerUseCase>(UPDATE_PRODUCER_USE_CASE);
     deleteProducerUseCase = module.get<DeleteProducerUseCase>(DELETE_PRODUCER_USE_CASE);
+    listProducerByCpfCnpjUseCase = module.get<ListProducerByCpfCnpjUseCase>(LIST_PRODUCER_BY_CPF_CNPJ_USE_CASE);
   })
 
   it('should be defined', () => {
@@ -134,6 +145,32 @@ describe('ProducerController', () => {
       await expect(controller.deleteProducer(id)).rejects.toThrow(error);
     });
   });
+
+  describe('listProducer', () => {
+    it('should return a producer by cpfCnpj', async () => {
+      // Arrange
+      const cpfCnpj = "58453523045";
+      const expectedResult = { id: 1, name: "Test Producer", cpfCnpj };
+      mockListByCpfCnpjUseCase.execute.mockResolvedValue(expectedResult);
+
+      // Act
+      const result = await controller.listProducerByCpfCnpj(cpfCnpj);
+
+      // Assert
+      expect(listProducerByCpfCnpjUseCase.execute).toHaveBeenCalledWith(cpfCnpj);
+      expect(result).toBe(expectedResult);
+    });
+
+    it('should throw an error if listProducer throws', async () => {
+      // Arrange
+      const cpfCnpj = "58453523045";
+      const error = new Error('Error fetching producer');
+      mockListByCpfCnpjUseCase.execute.mockRejectedValue(error);
+
+      // Act & Assert
+      await expect(controller.listProducerByCpfCnpj(cpfCnpj)).rejects.toThrow(error);
+    });
+  })
 
   afterEach(() => {
     jest.clearAllMocks();

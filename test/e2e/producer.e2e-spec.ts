@@ -19,32 +19,6 @@ describe('ProducerController (e2e)', () => {
     await app.close();
   });
 
-  it('GET /producer/listByCpfCnpj/:cpfCnpj - list producer by cpfCnpj', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/producer/listByCpfCnpj/58453523045')
-      .expect(200);
-    expect(response.body).toMatchObject({
-      cpfCnpj: '58453523045',
-    });
-  });
-
-  it('DELETE /producer/:id - delete a producer by id', async () => {
-    const producerList = await request(app.getHttpServer())
-      .get('/producer/listByCpfCnpj/58453523045')
-      .expect(200);
-
-    expect(producerList.body).toMatchObject({
-      cpfCnpj: '58453523045',
-    });
-
-    const producerId = producerList.body.id;
-
-    const response = await request(app.getHttpServer())
-      .delete(`/producer/${producerId}`)
-      .expect(200);
-    expect(response.body).toMatchObject({});
-  });
-
   it('POST /producer - add new producer', async () => {
     const bodyTest = {
       name: 'Producer e2e Test Posted',
@@ -78,11 +52,34 @@ describe('ProducerController (e2e)', () => {
       .send(bodyTest)
       .expect(200);
     expect(response.body).toMatchObject({});
+  });
 
-    const responseDelete = await request(app.getHttpServer())
+  it('GET /producer/listByCpfCnpj/:cpfCnpj - list producer by cpfCnpj', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/producer/listByCpfCnpj/58453523045')
+      .expect(200);
+    expect(response.body).toMatchObject({
+      name: 'Producer e2e Test Updated',
+      cpfCnpj: '58453523045',
+    });
+  });
+
+  it('DELETE /producer/:id - delete a producer by id', async () => {
+    const producerList = await request(app.getHttpServer())
+      .get('/producer/listByCpfCnpj/58453523045')
+      .expect(200);
+
+    expect(producerList.body).toMatchObject({
+      name: 'Producer e2e Test Updated',
+      cpfCnpj: '58453523045',
+    });
+
+    const producerId = producerList.body.id;
+
+    const response = await request(app.getHttpServer())
       .delete(`/producer/${producerId}`)
       .expect(200);
-    expect(responseDelete.body).toMatchObject({});
+    expect(response.body).toMatchObject({});
   });
 
 });

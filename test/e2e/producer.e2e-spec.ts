@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../../src/app.module';
-import { cpf } from 'cpf-cnpj-validator';
 
 describe('ProducerController (e2e)', () => {
   let app: INestApplication;
@@ -20,10 +19,10 @@ describe('ProducerController (e2e)', () => {
     await app.close();
   });
 
-  it('POST /producer - cria um produtor', async () => {
+  it('POST /producer - add new producer', async () => {
     const bodyTest = {
-      name: 'Producer Hytalo Test',
-      cpfCnpj: cpf.generate(),
+      name: 'Producer e2e Test',
+      cpfCnpj: '58453523045',
     };
     const response = await request(app.getHttpServer())
       .post('/producer')
@@ -32,12 +31,24 @@ describe('ProducerController (e2e)', () => {
     expect(response.body).toMatchObject({});
   });
 
-  it('PATCH /producer/:id - atualiza um produtor', async () => {
+  it('PATCH /producer/:id - update a producer by id', async () => {
     const bodyTest = {
-      name: 'Producer Hytalo Test Updated',
+      name: 'Producer e2e Test Updated',
     };
+
+    const producerList = await request(app.getHttpServer())
+      .get('/producer/listByCpfCnpj/58453523045')
+      .expect(200);
+
+    expect(producerList.body).toMatchObject({
+      name: 'Producer e2e Test',
+      cpfCnpj: '58453523045',
+    });
+
+    const producerId = producerList.body.id;
+
     const response = await request(app.getHttpServer())
-      .patch('/producer/16')
+      .patch(`/producer/${producerId}`)
       .send(bodyTest)
       .expect(200);
     expect(response.body).toMatchObject({});

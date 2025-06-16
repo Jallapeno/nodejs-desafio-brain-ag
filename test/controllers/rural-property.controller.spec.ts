@@ -1,6 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { CREATE_RURAL_PROPERTY_USE_CASE } from "src/constants/constants";
 import { RuralPropertyController } from "src/controllers/rural-property.controller";
+import { CreateRuralPropertyUseCase } from "src/usecases/rural-property/create-rural-property.usecase";
 
 describe('RuralPropertyController', () => {
   let controller: RuralPropertyController;
@@ -51,56 +52,36 @@ describe('RuralPropertyController', () => {
   });
 
   describe('createRuralProperty', () => {
+    const ruralPropertyDtoBody = {
+      name: 'Test Property',
+      city: 'Test City',
+      state: 'Test State',
+      totalArea: 100,
+      arableArea: 80,
+      vegetationArea: 20,
+      producerId: 1,
+      plantedCrops: []
+    };
     it('should create a rural property', async () => {
-      // Arrange
-      const createRuralPropertyDtoBody = {
-        name: 'Test Property',
-        city: 'Test City',
-        state: 'Test State',
-        totalArea: 100,
-        arableArea: 80,
-        vegetationArea: 20,
-        producer: {
-          id: 1,
-          name: 'Test Producer',
-          cpfCnpj: '12345678901'
-        },
-        plantedCrops: []
-      };
-      const expectedResponse = { id: 1, ...createRuralPropertyDtoBody };
+      const expectedResponse = { id: 1, ...ruralPropertyDtoBody };
 
       mockCreateRuralPropertyUseCase.execute.mockResolvedValue(expectedResponse);
 
       // Act
-      const result = await controller.createRuralProperty(createRuralPropertyDtoBody);
+      const result = await controller.createRuralProperty(ruralPropertyDtoBody);
 
       // Assert
-      expect(createRuralPropertyUseCase.execute).toHaveBeenCalledWith(createRuralPropertyDtoBody);
+      expect(createRuralPropertyUseCase.execute).toHaveBeenCalledWith(ruralPropertyDtoBody);
       expect(result).toBe(expectedResponse);
     });
 
     it('should throw an error if createRuralPropertyUseCase.execute fails', async () => {
-      // Arrange
-      const createRuralPropertyDtoBody = {
-        name: 'Test Property',
-        city: 'Test City',
-        state: 'Test State',
-        totalArea: 100,
-        arableArea: 80,
-        vegetationArea: 20,
-        producer: {
-          id: 1,
-          name: 'Test Producer',
-          cpfCnpj: '12345678901'
-        },
-        plantedCrops: []
-      };
       const error = new Error('Error creating rural property');
 
       mockCreateRuralPropertyUseCase.execute.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(controller.createRuralProperty(createRuralPropertyDtoBody)).rejects.toThrow(error);
+      await expect(controller.createRuralProperty(ruralPropertyDtoBody)).rejects.toThrow(error);
     })
   });
 

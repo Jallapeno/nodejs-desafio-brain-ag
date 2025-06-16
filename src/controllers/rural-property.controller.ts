@@ -1,6 +1,8 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CREATE_RURAL_PROPERTY_USE_CASE } from "src/constants/constants";
+import { CreateRuralPropertyDto } from "src/infra/dtos/rural-property/create-rural-property-infra.dto";
+import { CreateRuralPropertyUseCase } from "src/usecases/rural-property/create-rural-property.usecase";
 
 @Controller("rural-property")
 @ApiTags("RuralPropertyController")

@@ -21,7 +21,7 @@ describe('ProducerController (e2e)', () => {
 
   it('POST /producer - add new producer', async () => {
     const bodyTest = {
-      name: 'Producer e2e Test',
+      name: 'Producer e2e Test Posted',
       cpfCnpj: '58453523045',
     };
     const response = await request(app.getHttpServer())
@@ -41,7 +41,7 @@ describe('ProducerController (e2e)', () => {
       .expect(200);
 
     expect(producerList.body).toMatchObject({
-      name: 'Producer e2e Test',
+      name: 'Producer e2e Test Posted',
       cpfCnpj: '58453523045',
     });
 
@@ -50,6 +50,34 @@ describe('ProducerController (e2e)', () => {
     const response = await request(app.getHttpServer())
       .patch(`/producer/${producerId}`)
       .send(bodyTest)
+      .expect(200);
+    expect(response.body).toMatchObject({});
+  });
+
+  it('GET /producer/listByCpfCnpj/:cpfCnpj - list producer by cpfCnpj', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/producer/listByCpfCnpj/58453523045')
+      .expect(200);
+    expect(response.body).toMatchObject({
+      name: 'Producer e2e Test Updated',
+      cpfCnpj: '58453523045',
+    });
+  });
+
+  it('DELETE /producer/:id - delete a producer by id', async () => {
+    const producerList = await request(app.getHttpServer())
+      .get('/producer/listByCpfCnpj/58453523045')
+      .expect(200);
+
+    expect(producerList.body).toMatchObject({
+      name: 'Producer e2e Test Updated',
+      cpfCnpj: '58453523045',
+    });
+
+    const producerId = producerList.body.id;
+
+    const response = await request(app.getHttpServer())
+      .delete(`/producer/${producerId}`)
       .expect(200);
     expect(response.body).toMatchObject({});
   });

@@ -20,5 +20,5 @@ export class CreateRuralPropertyDto {
   vegetationArea: number;
 
   @ApiProperty({ description: 'Producer ID', example: 1 })
-  producerId: number;
+  producer: number;
 }

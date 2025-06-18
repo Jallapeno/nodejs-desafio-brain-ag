@@ -1,21 +1,21 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateRuralPropertyDto {
-  @ApiPropertyOptional({ description: 'Farm name', example: 'Fazenda Boa Vista' })
-  name?: string;
+  @ApiProperty({ description: 'Farm name', example: 'Fazenda Boa Vista' })
+  name: string;
 
-  @ApiPropertyOptional({ description: 'City', example: 'Uberlândia' })
-  city?: string;
+  @ApiProperty({ description: 'City', example: 'Uberlândia' })
+  city: string;
 
-  @ApiPropertyOptional({ description: 'State', example: 'MG' })
-  state?: string;
+  @ApiProperty({ description: 'State', example: 'MG' })
+  state: string;
 
-  @ApiPropertyOptional({ description: 'Total area (ha)', example: 100 })
-  totalArea?: number;
+  @ApiProperty({ description: 'Total area (ha)', example: 100 })
+  totalArea: number;
 
-  @ApiPropertyOptional({ description: 'Arable area (ha)', example: 70 })
-  arableArea?: number;
+  @ApiProperty({ description: 'Arable area (ha)', example: 70 })
+  arableArea: number;
 
-  @ApiPropertyOptional({ description: 'Vegetation area (ha)', example: 30 })
-  vegetationArea?: number;
+  @ApiProperty({ description: 'Vegetation area (ha)', example: 30 })
+  vegetationArea: number;
 }

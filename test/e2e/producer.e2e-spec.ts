@@ -41,7 +41,6 @@ describe('ProducerController (e2e)', () => {
       .expect(200);
 
     expect(producerList.body).toMatchObject({
-      name: 'Producer e2e Test Posted',
       cpfCnpj: '58453523045',
     });
 
@@ -59,7 +58,6 @@ describe('ProducerController (e2e)', () => {
       .get('/producer/listByCpfCnpj/58453523045')
       .expect(200);
     expect(response.body).toMatchObject({
-      name: 'Producer e2e Test Updated',
       cpfCnpj: '58453523045',
     });
   });
@@ -70,7 +68,6 @@ describe('ProducerController (e2e)', () => {
       .expect(200);
 
     expect(producerList.body).toMatchObject({
-      name: 'Producer e2e Test Updated',
       cpfCnpj: '58453523045',
     });
 

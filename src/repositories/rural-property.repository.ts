@@ -15,4 +15,12 @@ export class RuralPropertyRepository implements IRuralProperty {
     const ruralProperty = this.ruralPropertyRepository.getEntityManager().create(RuralProperty, data);
     await this.ruralPropertyRepository.getEntityManager().persistAndFlush(ruralProperty);
   }
+
+  async update(data: any): Promise<void> {
+    await this.ruralPropertyRepository.nativeUpdate({ id: data.id }, data);
+  }
+
+  async findById(id: number): Promise<RuralProperty | null> {
+    return this.ruralPropertyRepository.findOne({ id });
+  }
 }

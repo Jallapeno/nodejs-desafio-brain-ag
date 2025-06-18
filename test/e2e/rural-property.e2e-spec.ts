@@ -21,12 +21,13 @@ describe('RuralPropertyController (e2e)', () => {
 
   it('POST /rural-property - create a rural property', async () => {
     const bodyTest = {
-      name: 'Rural Property e2e Test',
-      city: 'Test City',
-      state: 'Test State',
+      name: 'Test e2e Property',
+      city: 'Test e2e City',
+      state: 'Test e2e State',
       totalArea: 100,
       arableArea: 80,
-      producerId: 1,
+      vegetationArea: 20,
+      producer: 1
     };
     const response = await request(app.getHttpServer())
       .post('/rural-property')

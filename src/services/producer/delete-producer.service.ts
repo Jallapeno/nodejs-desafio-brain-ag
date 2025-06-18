@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { DefaultException } from "src/exception/default.exception";
+import { IDeleteProducerService } from "src/interfaces/producer/delete-producer.service.interface";
 import { ProducerRepository } from "src/repositories/producer.repository";
 
 @Injectable()
-export class DeleteProducerService {
+export class DeleteProducerService implements IDeleteProducerService<number> {
   constructor(private readonly producerRepository: ProducerRepository) { }
 
   async execute(id: number) {

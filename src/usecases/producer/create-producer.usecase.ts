@@ -17,11 +17,6 @@ export class CreateProducerUseCase implements IUseCasePromise<any> {
     const _validatedBody = new CreateProducerDTO(body);
     await validateOrReject(_validatedBody);
     const result = await this._createProducerService.execute(body);
-    // return {
-    //   statusCode: 201,
-    //   message: "Producer created successfully",
-    //   data: result,
-    // };
     return result;
   }
 }

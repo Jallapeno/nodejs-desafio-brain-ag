@@ -1,14 +1,12 @@
-import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, Validate } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { Validate } from 'class-validator';
 import { IsCpfOrCnpj } from 'src/validators/is-cpf-or-cnpj.validator';
 
 export class UpdateProducerDto {
-  @ApiPropertyOptional({ description: 'Producer name', example: 'John Doe' })
-  @IsOptional()
-  name?: string;
+  @ApiProperty({ description: 'Producer name', example: 'John Doe' })
+  name: string;
 
-  @ApiPropertyOptional({ description: 'CPF or CNPJ', example: '58453523045' })
-  @IsOptional()
+  @ApiProperty({ description: 'CPF or CNPJ', example: '58453523045' })
   @Validate(IsCpfOrCnpj)
-  cpfCnpj?: string;
+  cpfCnpj: string;
 }

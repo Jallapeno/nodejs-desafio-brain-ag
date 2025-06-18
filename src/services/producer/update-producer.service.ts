@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ProducerRepository } from "src/repositories/producer.repository";
 import { UpdateProducerDto } from "src/infra/dtos/producer/update-producer-infra.dto";
 import { DefaultException } from "src/exception/default.exception";
+import { IUpdateProducerService } from "src/interfaces/producer/update-producer.service.interface";
 
 @Injectable()
-export class UpdateProducerService {
+export class UpdateProducerService implements IUpdateProducerService<UpdateProducerDto> {
   constructor(private readonly producerRepository: ProducerRepository) { }
 
   async execute(id: number, body: UpdateProducerDto) {

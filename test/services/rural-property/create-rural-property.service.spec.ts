@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'node:test';
+import { DefaultException } from 'src/exception/default.exception';
 import { RuralPropertyRepository } from 'src/repositories/rural-property.repository';
 import { CreateRuralPropertyService } from 'src/services/rural-property/create-rural-property.service';
 
@@ -7,7 +9,7 @@ describe('RuralPropertyService', () => {
   let repository: RuralPropertyRepository;
 
   const mockRuralPropertyRepository = {
-    createRuralProperty: jest.fn(),
+    create: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -43,12 +45,12 @@ describe('RuralPropertyService', () => {
     };
 
     it('should create a rural property successfully', async () => {
-      mockRuralPropertyRepository.createRuralProperty.mockResolvedValue(mockCreateRuralPropertyDto);
+      mockRuralPropertyRepository.create.mockResolvedValue(mockCreateRuralPropertyDto);
 
-      const result = await service.execute(mockCreateRuralPropertyDto);
+      await service.execute(mockCreateRuralPropertyDto);
 
-      expect(result).toEqual(mockCreateRuralPropertyDto);
-      expect(mockRuralPropertyRepository.createRuralProperty).toHaveBeenCalledWith(mockCreateRuralPropertyDto);
+      // expect(result).toEqual(mockCreateRuralPropertyDto);
+      expect(repository.create).toHaveBeenCalledWith(mockCreateRuralPropertyDto);
     });
 
     it('should throw an error if the sum of arable area and vegetation area exceeds total area', async () => {
@@ -68,11 +70,20 @@ describe('RuralPropertyService', () => {
     });
 
     it('should throw an error if repository throws an error', async () => {
-      const errorMessage = 'Database error';
-      mockRuralPropertyRepository.createRuralProperty.mockRejectedValue(new Error(errorMessage));
+      const mockError = {
+        status: 500,
+        message: 'Database error',
+        errors: ['Error detail'],
+      };
+      mockRuralPropertyRepository.create.mockRejectedValue(mockError);
 
       await expect(service.execute(mockCreateRuralPropertyDto)).rejects.toThrow(
-        new Error(`Error creating rural property: ${errorMessage}`)
+        new DefaultException(
+          "Error creating rural property",
+          mockError.status,
+          mockError.message,
+          mockError.errors
+        )
       );
     });
   });

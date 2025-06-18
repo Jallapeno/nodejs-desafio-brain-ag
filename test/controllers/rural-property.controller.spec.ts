@@ -106,7 +106,7 @@ describe('RuralPropertyController', () => {
       const result = await controller.updateRuralProperty(1, ruralPropertyDtoBodyUpdate);
 
       // Assert
-      expect(updateRuralPropertyUseCase.execute).toHaveBeenCalledWith(ruralPropertyDtoBodyUpdate);
+      expect(updateRuralPropertyUseCase.execute).toHaveBeenCalledWith(1, { ...ruralPropertyDtoBodyUpdate });
       expect(result).toBe(expectedResponse);
     });
 

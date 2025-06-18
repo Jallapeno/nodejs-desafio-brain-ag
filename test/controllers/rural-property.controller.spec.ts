@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { CREATE_RURAL_PROPERTY_USE_CASE, UPDATE_RURAL_PROPERTY_USE_CASE } from "src/constants/constants";
 import { RuralPropertyController } from "src/controllers/rural-property.controller";
 import { CreateRuralPropertyUseCase } from "src/usecases/rural-property/create-rural-property.usecase";
+import { UpdateRuralPropertyUseCase } from "src/usecases/rural-property/update-rural-property.usecase";
 
 describe('RuralPropertyController', () => {
   let controller: RuralPropertyController;
@@ -25,6 +26,15 @@ describe('RuralPropertyController', () => {
     arableArea: 80,
     vegetationArea: 20,
     producer: 1
+  };
+
+  const ruralPropertyDtoBodyUpdate = {
+    name: 'Test Property',
+    city: 'Test City',
+    state: 'Test State',
+    totalArea: 100,
+    arableArea: 80,
+    vegetationArea: 20
   };
 
   // const mockDeleteRuralPropertyUseCase = {
@@ -93,10 +103,10 @@ describe('RuralPropertyController', () => {
       mockUpdateRuralPropertyUseCase.execute.mockResolvedValue(expectedResponse);
 
       // Act
-      const result = await controller.updateRuralProperty(1, ruralPropertyDtoBody);
+      const result = await controller.updateRuralProperty(1, ruralPropertyDtoBodyUpdate);
 
       // Assert
-      expect(updateRuralPropertyUseCase.execute).toHaveBeenCalledWith(1, ruralPropertyDtoBody);
+      expect(updateRuralPropertyUseCase.execute).toHaveBeenCalledWith(ruralPropertyDtoBodyUpdate);
       expect(result).toBe(expectedResponse);
     });
 
@@ -106,7 +116,7 @@ describe('RuralPropertyController', () => {
       mockUpdateRuralPropertyUseCase.execute.mockRejectedValue(error);
 
       // Act & Assert
-      await expect(controller.updateRuralProperty(1, ruralPropertyDtoBody)).rejects.toThrow(error);
+      await expect(controller.updateRuralProperty(1, ruralPropertyDtoBodyUpdate)).rejects.toThrow(error);
     })
   })
 

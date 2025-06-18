@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { DefaultException } from "src/exception/default.exception";
 import { UpdateRuralPropertyDto } from "src/infra/dtos/rural-property/update-rural-property-infra.dto";
 import { IUpdateRuralPropertyService } from "src/interfaces/rural-property/update-rural-property.service.interface";
 import { RuralPropertyRepository } from "src/repositories/rural-property.repository";
@@ -19,8 +20,11 @@ export class UpdateRuralPropertyService implements IUpdateRuralPropertyService<U
     try {
       await this._ruralPropertyRepository.update(body);
     } catch (error) {
-      throw new Error(
-        "Error updating rural property: " + error.message
+      throw new DefaultException(
+        "Error creating rural property",
+        error.status,
+        error.message,
+        error.errors
       );
     }
   }

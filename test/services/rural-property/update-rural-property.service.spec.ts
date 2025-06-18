@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DefaultException } from 'src/exception/default.exception';
 import { RuralPropertyRepository } from 'src/repositories/rural-property.repository';
-import { CreateRuralPropertyService } from 'src/services/rural-property/create-rural-property.service';
+import { UpdateRuralPropertyService } from 'src/services/rural-property/update-rural-property.service';
 
-describe('RuralPropertyService', () => {
-  let service: CreateRuralPropertyService;
+describe('UpdateRuralPropertyService', () => {
+  let service: UpdateRuralPropertyService;
   let repository: RuralPropertyRepository;
 
   const mockRuralPropertyRepository = {
-    create: jest.fn(),
+    update: jest.fn(),
   };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CreateRuralPropertyService,
+        UpdateRuralPropertyService,
         {
           provide: RuralPropertyRepository,
           useValue: mockRuralPropertyRepository,
@@ -22,7 +22,7 @@ describe('RuralPropertyService', () => {
       ],
     }).compile();
 
-    service = module.get<CreateRuralPropertyService>(CreateRuralPropertyService);
+    service = module.get<UpdateRuralPropertyService>(UpdateRuralPropertyService);
     repository = module.get<RuralPropertyRepository>(RuralPropertyRepository);
   });
 
@@ -31,40 +31,35 @@ describe('RuralPropertyService', () => {
     expect(repository).toBeDefined();
   });
 
-  describe('createRuralProperty', () => {
+  describe('updateRuralProperty', () => {
     // Arrange
-    const mockCreateRuralPropertyDto = {
-      name: 'Test Property',
-      city: 'Test City',
-      state: 'TS',
+    const mockUpdateRuralPropertyDto = {
+      id: 1,
+      name: 'Updated Property',
+      city: 'Updated City',
+      state: 'US',
       totalArea: 100,
       arableArea: 70,
       vegetationArea: 30,
-      producer: 1,
     };
 
-    it('should create a rural property successfully', async () => {
-      mockRuralPropertyRepository.create.mockResolvedValue(mockCreateRuralPropertyDto);
+    it('should update a rural property successfully', async () => {
+      mockRuralPropertyRepository.update.mockResolvedValue(mockUpdateRuralPropertyDto);
 
-      await service.execute(mockCreateRuralPropertyDto);
+      await service.execute(mockUpdateRuralPropertyDto);
 
-      // expect(result).toEqual(mockCreateRuralPropertyDto);
-      expect(repository.create).toHaveBeenCalledWith(mockCreateRuralPropertyDto);
+      expect(repository.update).toHaveBeenCalledWith(mockUpdateRuralPropertyDto);
     });
 
     it('should throw an error if the sum of arable area and vegetation area exceeds total area', async () => {
       const invalidDto = {
-        name: 'Invalid Property',
-        city: 'Invalid City',
-        state: 'IV',
-        totalArea: 100,
+        ...mockUpdateRuralPropertyDto,
         arableArea: 80,
         vegetationArea: 30,
-        producer: 1,
       };
 
       await expect(service.execute(invalidDto)).rejects.toThrow(
-        'The sum of arable area and vegetation area cannot exceed the total area of the farm.'
+        new Error('The sum of arable area and vegetation area cannot exceed the total area of the farm.')
       );
     });
 
@@ -74,11 +69,11 @@ describe('RuralPropertyService', () => {
         message: 'Database error',
         errors: ['Error detail'],
       };
-      mockRuralPropertyRepository.create.mockRejectedValue(mockError);
+      mockRuralPropertyRepository.update.mockRejectedValue(mockError);
 
-      await expect(service.execute(mockCreateRuralPropertyDto)).rejects.toThrow(
+      await expect(service.execute(mockUpdateRuralPropertyDto)).rejects.toThrow(
         new DefaultException(
-          "Error creating rural property",
+          "Error updating rural property",
           mockError.status,
           mockError.message,
           mockError.errors
@@ -87,4 +82,3 @@ describe('RuralPropertyService', () => {
     });
   });
 });
-

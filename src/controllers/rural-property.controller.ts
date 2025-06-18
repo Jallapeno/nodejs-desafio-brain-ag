@@ -1,5 +1,5 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
-import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CREATE_RURAL_PROPERTY_USE_CASE } from "src/constants/constants";
 import { CreateRuralPropertyDto } from "src/infra/dtos/rural-property/create-rural-property-infra.dto";
 import { CreateRuralPropertyUseCase } from "src/usecases/rural-property/create-rural-property.usecase";
@@ -33,6 +33,7 @@ export class RuralPropertyController {
     status: 400,
     description: "Bad request. Invalid input data."
   })
+  @ApiBody({ type: CreateRuralPropertyDto })
   async createRuralProperty(@Body() body: CreateRuralPropertyDto) {
     return await this._createRuralPropertyUseCase.execute(body);
   }

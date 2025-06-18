@@ -59,8 +59,7 @@ describe('RuralPropertyController', () => {
       totalArea: 100,
       arableArea: 80,
       vegetationArea: 20,
-      producerId: 1,
-      plantedCrops: []
+      producer: 1
     };
     it('should create a rural property', async () => {
       const expectedResponse = { id: 1, ...ruralPropertyDtoBody };

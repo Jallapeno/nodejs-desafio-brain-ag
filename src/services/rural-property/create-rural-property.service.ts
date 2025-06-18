@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { DefaultException } from "src/exception/default.exception";
 import { CreateRuralPropertyDto } from "src/infra/dtos/rural-property/create-rural-property-infra.dto";
 import { ICreateRuralPropertyService } from "src/interfaces/rural-property/create-rural-property.service.interface";
@@ -12,6 +12,12 @@ export class CreateRuralPropertyService implements ICreateRuralPropertyService<C
   ) { }
 
   async execute(body: CreateRuralPropertyDto) {
+    const { totalArea, arableArea, vegetationArea } = body;
+    if ((arableArea + vegetationArea) > totalArea) {
+      throw new BadRequestException(
+        'The sum of arable area and vegetation area cannot exceed the total area of the farm.'
+      );
+    }
     try {
       await this._ruralPropertyRepository.create(body);
     } catch (error) {

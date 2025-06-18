@@ -19,4 +19,8 @@ export class RuralPropertyRepository implements IRuralProperty {
   async update(data: any): Promise<void> {
     await this.ruralPropertyRepository.nativeUpdate({ id: data.id }, data);
   }
+
+  async findById(id: number): Promise<RuralProperty | null> {
+    return this.ruralPropertyRepository.findOne({ id });
+  }
 }

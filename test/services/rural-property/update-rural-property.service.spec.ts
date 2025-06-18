@@ -9,6 +9,7 @@ describe('UpdateRuralPropertyService', () => {
 
   const mockRuralPropertyRepository = {
     update: jest.fn(),
+    findById: jest.fn()
   };
 
   beforeEach(async () => {
@@ -34,7 +35,6 @@ describe('UpdateRuralPropertyService', () => {
   describe('updateRuralProperty', () => {
     // Arrange
     const mockUpdateRuralPropertyDto = {
-      id: 1,
       name: 'Updated Property',
       city: 'Updated City',
       state: 'US',
@@ -44,11 +44,12 @@ describe('UpdateRuralPropertyService', () => {
     };
 
     it('should update a rural property successfully', async () => {
+      mockRuralPropertyRepository.findById.mockResolvedValue(mockUpdateRuralPropertyDto);
       mockRuralPropertyRepository.update.mockResolvedValue(mockUpdateRuralPropertyDto);
 
-      await service.execute(mockUpdateRuralPropertyDto);
+      await service.execute(1, mockUpdateRuralPropertyDto);
 
-      expect(repository.update).toHaveBeenCalledWith(mockUpdateRuralPropertyDto);
+      expect(repository.update).toHaveBeenCalledWith({ id: 1, ...mockUpdateRuralPropertyDto });
     });
 
     it('should throw an error if the sum of arable area and vegetation area exceeds total area', async () => {
@@ -58,7 +59,7 @@ describe('UpdateRuralPropertyService', () => {
         vegetationArea: 30,
       };
 
-      await expect(service.execute(invalidDto)).rejects.toThrow(
+      await expect(service.execute(1, invalidDto)).rejects.toThrow(
         new Error('The sum of arable area and vegetation area cannot exceed the total area of the farm.')
       );
     });
@@ -71,7 +72,7 @@ describe('UpdateRuralPropertyService', () => {
       };
       mockRuralPropertyRepository.update.mockRejectedValue(mockError);
 
-      await expect(service.execute(mockUpdateRuralPropertyDto)).rejects.toThrow(
+      await expect(service.execute(1, mockUpdateRuralPropertyDto)).rejects.toThrow(
         new DefaultException(
           "Error updating rural property",
           mockError.status,

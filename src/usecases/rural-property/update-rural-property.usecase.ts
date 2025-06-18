@@ -13,10 +13,10 @@ export class UpdateRuralPropertyUseCase implements IUseCasePromise<any> {
     private readonly _updateRuralPropertyService: UpdateRuralPropertyService
   ) { }
 
-  async execute(body: UpdateRuralPropertyDto): Promise<any> {
+  async execute(id: number, body: UpdateRuralPropertyDto): Promise<any> {
     const _validatedBody = new UpdateRuralPropertyDTO(body);
     await validateOrReject(_validatedBody);
-    const result = await this._updateRuralPropertyService.execute(body);
+    const result = await this._updateRuralPropertyService.execute(id, body);
     return result;
   }
 }

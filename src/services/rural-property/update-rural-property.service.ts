@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { DefaultException } from "src/exception/default.exception";
 import { UpdateRuralPropertyDto } from "src/infra/dtos/rural-property/update-rural-property-infra.dto";
 import { IUpdateRuralPropertyService } from "src/interfaces/rural-property/update-rural-property.service.interface";
@@ -10,7 +10,7 @@ export class UpdateRuralPropertyService implements IUpdateRuralPropertyService<U
     private readonly _ruralPropertyRepository: RuralPropertyRepository
   ) { }
 
-  async execute(body: UpdateRuralPropertyDto) {
+  async execute(id: number, body: UpdateRuralPropertyDto) {
     const { totalArea, arableArea, vegetationArea } = body;
     if ((arableArea + vegetationArea) > totalArea) {
       throw new Error(
@@ -18,10 +18,12 @@ export class UpdateRuralPropertyService implements IUpdateRuralPropertyService<U
       );
     }
     try {
-      await this._ruralPropertyRepository.update(body);
+      const ruralProperty = await this._ruralPropertyRepository.findById(id);
+      if (!ruralProperty) throw new NotFoundException('Rural property not found');
+      await this._ruralPropertyRepository.update({ id, ...body });
     } catch (error) {
       throw new DefaultException(
-        "Error creating rural property",
+        "Error updating rural property",
         error.status,
         error.message,
         error.errors

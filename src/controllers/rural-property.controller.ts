@@ -55,6 +55,6 @@ export class RuralPropertyController {
   })
   @ApiBody({ type: UpdateRuralPropertyDto })
   async updateRuralProperty(@Param('id') id: number, @Body() body: UpdateRuralPropertyDto) {
-    return await this._updateRuralPropertyUseCase.execute(body);
+    return await this._updateRuralPropertyUseCase.execute(id, body);
   }
 }

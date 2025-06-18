@@ -1,3 +1,3 @@
 export interface IUpdateRuralPropertyService<UpdateRuralPropertyDto> {
-  execute(body: UpdateRuralPropertyDto)
+  execute(id: number, body: UpdateRuralPropertyDto)
 }

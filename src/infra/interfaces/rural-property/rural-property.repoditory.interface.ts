@@ -4,7 +4,7 @@ import { UpdateRuralPropertyDto } from "src/infra/dtos/rural-property/update-rur
 export interface IRuralProperty {
   create(data: CreateRuralPropertyDto): Promise<void>;
   update(data: UpdateRuralPropertyDto): Promise<void>;
-  // findById(id: number): Promise<any>;
+  findById(id: number): Promise<any>;
   // delete(id: number): Promise<void>;
   // findByProducerId(producerId: number): Promise<any>;
   // findByProducerCpfCnpj(cpfCnpj: string): Promise<any>;

@@ -4,6 +4,7 @@ import { CREATE_RURAL_PROPERTY_USE_CASE, UPDATE_RURAL_PROPERTY_USE_CASE } from "
 import { CreateRuralPropertyDto } from "src/infra/dtos/rural-property/create-rural-property-infra.dto";
 import { UpdateRuralPropertyDto } from "src/infra/dtos/rural-property/update-rural-property-infra.dto";
 import { CreateRuralPropertyUseCase } from "src/usecases/rural-property/create-rural-property.usecase";
+import { UpdateRuralPropertyUseCase } from "src/usecases/rural-property/update-rural-property.usecase";
 
 @Controller("rural-property")
 @ApiTags("RuralPropertyController")
